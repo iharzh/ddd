@@ -1,0 +1,2 @@
+# ddd
+Learning DDD approach
