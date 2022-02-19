@@ -1,7 +1,9 @@
+import { UsersList } from './components';
+
 function App() {
   return (
     <div className="App">
-      Client app
+      <UsersList />
     </div>
   );
 }

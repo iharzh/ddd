@@ -1,9 +1,11 @@
 import express from 'express';
 import { connectDb } from './src/infrastructure/db';
 import router from './src/infrastructure/routes';
+import cors from 'cors';
 
 const app = express();
 
+app.use(cors())
 app.use('/', router);
 
 const PORT = 5000;
