@@ -1,6 +1,6 @@
 import UsersList, {User} from './UsersList';
 import { useCallback, useEffect, useState } from 'react';
-import UsersService from '../../services/usersService';
+import UsersService from '../../../../services/usersService';
 
 const UsersListContainer = () => {
   const [isUsersLoading, setIsUsersLoading] = useState<boolean>(true);
@@ -18,8 +18,8 @@ const UsersListContainer = () => {
   }, [])
 
   useEffect(() => {
-    loadUsers();
-  }, [])
+    loadUsers()
+  }, [loadUsers])
 
   if (isUsersLoading || !users) return <p>Loading...</p>
 

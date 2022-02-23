@@ -1,3 +1,5 @@
+import UserRow from './components/User';
+
 export interface User {
   firstName: string;
   lastName: string;
@@ -11,15 +13,11 @@ interface UsersListProps {
 
 const UsersList = ({users}: UsersListProps) => {
   return (
-    <ul>
+    <>
       {users.map(user => (
-        <li key={user.email}>
-          <p>{user.firstName} {user.lastName}</p>
-          {user.username && <p>{user.username}</p>}
-          <p>{user.email}</p>
-        </li>
+        <UserRow key={user.email} firstName={user.firstName} lastName={user.lastName} email={user.email} username={user.username} />
       ))}
-    </ul>
+    </>
   )
 }
 
