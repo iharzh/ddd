@@ -13,4 +13,15 @@ usersRouter.get('/', async (req, res) => {
   return res.status(200).json(users)
 })
 
+usersRouter.post('/', async(req, res) => {
+  try {
+
+  const createdUser = await usersController.createUser(req.body);
+
+  return res.status(201).json(createdUser)
+  } catch(e: any) {
+    throw new Error(e)
+  }
+})
+
 export default usersRouter;

@@ -1,11 +1,15 @@
+require('dotenv').config();
+
 import express from 'express';
-import { connectDb } from './src/infrastructure/db';
-import router from './src/infrastructure/routes';
 import cors from 'cors';
+import bodyParser from 'body-parser';
+import router from './src/infrastructure/routes';
+import { connectDb } from './src/infrastructure/db';
 
 const app = express();
 
 app.use(cors())
+app.use(bodyParser.json())
 app.use('/', router);
 
 const PORT = 5000;

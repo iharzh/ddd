@@ -1,7 +1,9 @@
-class UsersController {
-  private readonly userRepo: any;
+import UsersRepository from '../repository';
 
-  constructor(userRepo: any) {
+class UsersController {
+  private readonly userRepo: UsersRepository;
+
+  constructor(userRepo: UsersRepository) {
     this.userRepo = userRepo;
   }
 
@@ -10,6 +12,14 @@ class UsersController {
       return await this.userRepo.getAllUsers()
     } catch (e) {
       console.log('Users Controller error')
+    }
+  }
+
+  async createUser(user: any) {
+    try {
+      return this.userRepo.createUser(user)
+    } catch(e) {
+      console.log('User creation error: ', e)
     }
   }
 }
