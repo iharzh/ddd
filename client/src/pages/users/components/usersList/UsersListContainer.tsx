@@ -1,6 +1,7 @@
 import UsersList, {User} from './UsersList';
 import { useCallback, useEffect, useState } from 'react';
 import UsersService from '../../../../services/usersService';
+import httpService from '../../../../services/httpService';
 
 const UsersListContainer = () => {
   const [isUsersLoading, setIsUsersLoading] = useState<boolean>(true);
@@ -8,12 +9,12 @@ const UsersListContainer = () => {
 
   const loadUsers = useCallback(async () => {
     try {
-      const usersService = new UsersService();
+      const usersService = new UsersService(httpService);
       const result: User[] = await usersService.getAllUsers();
       setUsers(result);
       setIsUsersLoading(false);
     } catch(e) {
-      console.log('error')
+      console.log('error', e)
     }
   }, [])
 

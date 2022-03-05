@@ -2,7 +2,9 @@ import {Routes, Route, Navigate, Outlet} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Home, Users, Login, Register } from './pages';
 
-const PrivateOutlet = ({ isAuthenticated }: any) => {
+const PrivateOutlet = () => {
+  const isAuthenticated = !!localStorage.getItem('JWT_TOKEN')
+
   if (isAuthenticated) {
     return <Outlet />
   }

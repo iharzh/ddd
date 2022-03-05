@@ -16,4 +16,10 @@ authRouter.post('/register', () => {
   console.log('register router triggered')
 })
 
+authRouter.post('/refreshToken', async (req, res) => {
+  const newToken = authController.refreshToken(req.body.refreshToken)
+
+  res.send(newToken)
+})
+
 export default authRouter;

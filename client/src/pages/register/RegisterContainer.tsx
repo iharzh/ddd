@@ -2,6 +2,7 @@ import Register from './Register';
 import { useCallback } from 'react';
 import UsersService from '../../services/usersService';
 import { CreateUserDTO } from '../../types/user';
+import httpService from '../../services/httpService';
 
 const RegisterContainer = () => {
   const createUser = useCallback(async (userData: any) => {
@@ -13,7 +14,7 @@ const RegisterContainer = () => {
       password: userData.password,
     };
 
-    const usersService = new UsersService();
+    const usersService = new UsersService(httpService);
 
     return await usersService.createUser(user);
   }, [])

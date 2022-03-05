@@ -1,22 +1,17 @@
 class AuthService {
+  private readonly httpService;
+
+  constructor(httpService: any) {
+    this.httpService = httpService;
+  }
+
   async login(user: any) {
     try {
-      const response: any = await fetch('http://localhost:5000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-      })
+      const result = await this.httpService.post('http://localhost:5000/auth/login', user)
+      const {token, refreshToken} = result.data;
 
-      const result = await response.json()
-
-      console.log({result})
-
-      if (result.token) {
-        console.log(result.token)
-        localStorage.setItem('JWT_TOKEN', result.token)
-      }
+      localStorage.setItem('JWT_TOKEN', token);
+      localStorage.setItem('REFRESH_TOKEN', refreshToken)
     } catch (e) {
       console.error(e)
     }
