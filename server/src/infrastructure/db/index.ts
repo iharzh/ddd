@@ -1,18 +1,17 @@
-import {Sequelize} from 'sequelize';
+import { Sequelize } from 'sequelize';
 
 export const sequelize = new Sequelize({
   dialect: 'postgres',
   host: 'localhost',
   database: 'ddd',
   username: 'postgres',
-  password: 'password'
-})
+  password: 'password',
+});
 
-export const connectDb = async() => {
+export const connectDb = async () => {
   try {
-    await sequelize.authenticate()
-  } catch(e) {
-    console.log(e)
+    await sequelize.authenticate();
+  } catch (e) {
+    console.log(e);
   }
-}
-
+};

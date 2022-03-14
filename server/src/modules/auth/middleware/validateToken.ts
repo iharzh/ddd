@@ -1,7 +1,7 @@
 import { TokenExpiredError, verify, VerifyErrors } from 'jsonwebtoken';
 
 export const validateToken = async (req: any, res: any, next: any) => {
-  console.log(req.headers)
+  console.log(req.headers);
   const token = req.headers['x-access-token'];
 
   if (!token) {
@@ -11,7 +11,7 @@ export const validateToken = async (req: any, res: any, next: any) => {
   // @ts-ignore
   verify(token, process.env.JWT_SECRET, (err: VerifyErrors | null, decoded: any) => {
     if (err) {
-      console.log({err, isExpired: err instanceof TokenExpiredError});
+      console.log({ err, isExpired: err instanceof TokenExpiredError });
 
       if (err instanceof TokenExpiredError) {
         return res.status(401).send({ message: 'Token expired' });
@@ -21,6 +21,6 @@ export const validateToken = async (req: any, res: any, next: any) => {
     }
 
     req.user = decoded;
-    next()
-  })
-}
+    next();
+  });
+};
