@@ -1,7 +1,6 @@
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 
 interface LoginProps {
   handleLogin: (data: any) => void;

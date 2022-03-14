@@ -1,4 +1,5 @@
 import { CreateUserDTO } from '../types/user';
+import { BaseApiUrl, Users } from '../shared/constants/apiRoutes';
 
 
 class UsersService {
@@ -10,15 +11,7 @@ class UsersService {
 
   async getAllUsers() {
     try {
-      // const token = localStorage.getItem('JWT_TOKEN');
-      // const result = await fetch('http://localhost:5000/users', {
-      //   headers: {
-      //     'Authorization': `Bearer ${token}`
-      //   },
-      // });
-      //
-      // return await result.json()
-      return await this.httpService.get('http://localhost:5000/users')
+      return await this.httpService.get(`${BaseApiUrl}/${Users.GetAllUsers}`)
     } catch(e) {
       console.error({ e })
     }
@@ -26,16 +19,7 @@ class UsersService {
 
   async createUser(user: CreateUserDTO) {
     try {
-      // const token = localStorage.getItem('JWT_TOKEN');
-      // const response = await fetch('http://localhost:5000/users', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${token}`
-      //   },
-      //   body: JSON.stringify(user)
-      //   })
-      return await this.httpService.post('http://localhost:5000/users', user)
+      return await this.httpService.post(`${BaseApiUrl}/${Users.CreateUser}`, user)
     } catch (e) {
       console.error({ e })
     }

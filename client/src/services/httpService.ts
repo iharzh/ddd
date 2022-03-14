@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
+import { Auth, BaseApiUrl } from '../shared/constants/apiRoutes';
 
-class HttpService {
+export class HttpService {
   private readonly axiosInstance: AxiosInstance;
 
   constructor() {
@@ -15,9 +16,8 @@ class HttpService {
       (config) => {
         const token = localStorage.getItem('JWT_TOKEN')
         if (token) {
-          // config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
           // @ts-ignore
-          config.headers["x-access-token"] = token; // for Node.js Express back-end
+          config.headers["x-access-token"] = token;
         }
         return config;
       },
@@ -31,23 +31,34 @@ class HttpService {
         return res;
       },
       async (err: any) => {
-        console.log({err});
+        console.log('response interceptor error', {err})
 
-        if (err.response.status === 401 && !err.config._retry) {
+        // handle regular token expiration
+        // should return and store new auth token
+        const refreshTokenUrl = `${BaseApiUrl}/${Auth.RefreshToken}`
+        if (err.response.status === 401 && !err.config._retry && !err.config.url.includes('/refreshToken')) {
           try {
-            const res = await this.axiosInstance.post('http://localhost:5000/auth/refreshToken', {
+            const res = await this.axiosInstance.post(refreshTokenUrl, {
               refreshToken: localStorage.getItem('REFRESH_TOKEN')
             })
 
+            console.log({res: res.data})
+
             const { token } = res.data;
             localStorage.setItem('JWT_TOKEN', token)
-            err.config._retry = true;
 
             return this.axiosInstance(err.config);
           } catch (_error) {
+            console.log(_error)
               return Promise.reject(_error);
-            } finally {
-          }
+            }
+        }
+
+        if (err.response.status === 401 && !err.config._retry && err.config.url.includes('/refreshToken')) {
+          localStorage.removeItem('JWT_TOKEN');
+          localStorage.removeItem('REFRESH_TOKEN');
+
+          window.location.href = "http://localhost:3000";
         }
 
         return this.axiosInstance;
@@ -55,10 +66,8 @@ class HttpService {
     );
   }
 
-  async get(url: string, data: any) {
-    return await this.axiosInstance.get(url, {
-      data
-    })
+  async get<ReturnedType>(url: string): Promise<ReturnedType> {
+    return await this.axiosInstance.get(url)
   }
 
   async post(url: string, data: any) {

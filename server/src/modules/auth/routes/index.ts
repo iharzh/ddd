@@ -2,6 +2,7 @@ import {Router} from 'express';
 import AuthController from '../controller';
 import UsersRepository from '../../users/repository';
 import User from '../../../infrastructure/db/models/user';
+import { TokenExpiredError } from 'jsonwebtoken';
 
 const authRouter = Router();
 const usersRepository = new UsersRepository({UserModel: User})
@@ -17,9 +18,19 @@ authRouter.post('/register', () => {
 })
 
 authRouter.post('/refreshToken', async (req, res) => {
-  const newToken = authController.refreshToken(req.body.refreshToken)
+  try {
+    const refreshTokenResult = authController.refreshToken(req.body.refreshToken)
+    return res.send(refreshTokenResult)
+  } catch(err) {
+    console.log({err, isExpired: err instanceof TokenExpiredError})
+    if (err instanceof TokenExpiredError) {
+      return res.status(401).send({message: 'Refresh token expired, please login again'})
+    }
 
-  res.send(newToken)
+    res.status(500).send({message: 'Unknown server error'})
+  }
+
+
 })
 
 export default authRouter;

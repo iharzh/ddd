@@ -1,16 +1,18 @@
 import Login from './Login';
 import { useCallback } from 'react';
-import AuthService from '../../services/authService';
-import httpService from '../../services/httpService';
-
+import useAuth from '../../contexts/auth';
+import {Navigate} from 'react-router-dom';
 
 const LoginContainer = () => {
-  const handleLogin = useCallback(async(user) => {
-    const authService = new AuthService(httpService);
+  const { login, user } = useAuth();
 
-    return await authService.login(user)
-  }, [])
+  const handleLogin = useCallback((user) => {
+    login(user)
+  }, [login])
 
+  if (user) {
+    return <Navigate to="/users" />
+  }
 
   return <Login handleLogin={handleLogin}/>
 }

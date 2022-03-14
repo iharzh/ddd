@@ -1,6 +1,6 @@
 import UsersRepository from '../../users/repository';
 import { compare, hash } from 'bcrypt';
-import { sign, verify } from 'jsonwebtoken';
+import { sign, TokenExpiredError, verify } from 'jsonwebtoken';
 
 class AuthController {
   private readonly usersRepo: UsersRepository
@@ -24,7 +24,8 @@ class AuthController {
       firstName: foundUser.firstName,
       lastName: foundUser.lastName,
       username: foundUser.username,
-      email: foundUser.email
+      email: foundUser.email,
+      id: foundUser.id
     }
 
     const token = sign(userDataToReturn, process.env.JWT_SECRET || '', {
@@ -34,7 +35,7 @@ class AuthController {
       expiresIn: 3600 // 1 hr
     })
 
-      return { token, refreshToken }
+      return { token, refreshToken, userData: foundUser }
     } catch(e){console.log(e)}
   }
 
@@ -43,10 +44,11 @@ class AuthController {
 
     // @ts-ignore
     return verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, decoded: any) => {
-      if (err) throw new Error();
+      if (err && err instanceof TokenExpiredError) { // @ts-ignore
+        throw new TokenExpiredError(err);
+      }
 
-      console.log({decoded})
-      const userData = {firstName: decoded.firstName, lastName: decoded.lastName, username: decoded.username, email: decoded.email}
+      const userData = {firstName: decoded.firstName, lastName: decoded.lastName, username: decoded.username, email: decoded.email, id: decoded.id}
       // @ts-ignore
       const token = sign(userData, process.env.JWT_SECRET, {expiresIn: 30});
 

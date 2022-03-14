@@ -11,7 +11,10 @@ const UsersListContainer = () => {
     try {
       const usersService = new UsersService(httpService);
       const result: User[] = await usersService.getAllUsers();
-      setUsers(result);
+      console.log('users', result)
+
+      // @ts-ignore
+      setUsers(result.data);
       setIsUsersLoading(false);
     } catch(e) {
       console.log('error', e)
