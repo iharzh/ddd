@@ -17,11 +17,9 @@ const RegisterContainer = () => {
     const usersService = new UsersService(httpService);
 
     return await usersService.createUser(user);
-  }, [])
+  }, []);
 
-  return (
-    <Register createUser={createUser}/>
-  )
-}
+  return <Register createUser={createUser} />;
+};
 
 export default RegisterContainer;

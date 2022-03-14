@@ -5,11 +5,9 @@ const HeaderContainer = () => {
 
   const handleLogout = () => {
     authContext.logout();
-  }
+  };
 
-  return (
-    <Header currentUser={authContext.user} handleLogout={handleLogout}/>
-  );
+  return <Header currentUser={authContext.user} handleLogout={handleLogout} />;
 };
 
 export default HeaderContainer;

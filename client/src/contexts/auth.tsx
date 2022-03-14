@@ -1,4 +1,12 @@
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import AuthService from '../services/authService';
 import httpService from '../services/httpService';
 import { Spinner } from 'react-bootstrap';
@@ -16,7 +24,7 @@ interface AuthContextType {
   userError: any;
   isInitialLoading: boolean;
   isLoading: boolean;
-  login: (user:any) => void;
+  login: (user: any) => void;
   logout: () => void;
 }
 
@@ -26,7 +34,7 @@ interface AuthProviderProps {
 
 const AuthContext = createContext({} as AuthContextType);
 
-export const AuthProvider = ({children}: AuthProviderProps) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<AuthContextType['user']>(null);
   const [userError, setUserError] = useState(null);
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
@@ -36,19 +44,18 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
     try {
       const authService = new AuthService(httpService);
 
-      const result = await authService.getCurrentUser();
-      // @ts-ignore
+      const result: any = await authService.getCurrentUser();
       setUser(result.data);
-    } catch(e) {
-      setUser(null)
+    } catch (e) {
+      setUser(null);
     } finally {
-      setIsInitialLoading(false)
+      setIsInitialLoading(false);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    getCurrentUser()
-  }, [getCurrentUser])
+    getCurrentUser();
+  }, [getCurrentUser]);
 
   const login = useCallback(async (userData) => {
     try {
@@ -56,44 +63,42 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
 
       const authService = new AuthService(httpService);
 
-      const user = await authService.login(userData)
+      const user = await authService.login(userData);
       setUser(user);
     } catch (e) {
-      console.log({e})
+      console.log({ e });
       setUserError(e as any);
-      setUser(null)
+      setUser(null);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }, [])
+  }, []);
 
   const logout = useCallback(() => {
     localStorage.removeItem('JWT_TOKEN');
     localStorage.removeItem('REFRESH_TOKEN');
-    setUser(null)
-  }, [])
+    setUser(null);
+  }, []);
 
-  const memoizedValue = useMemo(() => ({
-    user,
-    userError, isInitialLoading, isLoading,
-    login,
-    logout
-  }), [isInitialLoading, isLoading, login, logout, user, userError])
+  const memoizedValue = useMemo(
+    () => ({
+      user,
+      userError,
+      isInitialLoading,
+      isLoading,
+      login,
+      logout,
+    }),
+    [isInitialLoading, isLoading, login, logout, user, userError]
+  );
 
   if (isInitialLoading) {
-    return <Spinner animation="border"/>
+    return <Spinner animation="border" />;
   }
 
-  return (
-    <AuthContext.Provider value={memoizedValue}>
-      {children}
-    </AuthContext.Provider>
-  )
-}
+  return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;
+};
 
 const useAuth = () => useContext(AuthContext);
 
 export default useAuth;
-
-
-

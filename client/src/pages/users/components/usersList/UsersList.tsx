@@ -8,17 +8,23 @@ export interface User {
 }
 
 interface UsersListProps {
-  users: User[]
+  users: User[];
 }
 
-const UsersList = ({users}: UsersListProps) => {
+const UsersList = ({ users }: UsersListProps) => {
   return (
     <>
-      {users.map(user => (
-        <UserRow key={user.email} firstName={user.firstName} lastName={user.lastName} email={user.email} username={user.username} />
+      {users.map((user) => (
+        <UserRow
+          key={user.email}
+          firstName={user.firstName}
+          lastName={user.lastName}
+          email={user.email}
+          username={user.username}
+        />
       ))}
     </>
-  )
-}
+  );
+};
 
 export default UsersList;

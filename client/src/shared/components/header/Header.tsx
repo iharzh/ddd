@@ -1,14 +1,13 @@
 import React from 'react';
 import { Nav, Navbar, Button } from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 interface HeaderProps {
-  currentUser: {firstName: string; lastName: string} | undefined;
+  currentUser: { firstName: string; lastName: string } | undefined;
   handleLogout: () => void;
 }
 
-const Header = ({currentUser, handleLogout}: HeaderProps) => {
-
+const Header = ({ currentUser, handleLogout }: HeaderProps) => {
   return (
     <Navbar bg="light" expand="md">
       <LinkContainer to="/">
