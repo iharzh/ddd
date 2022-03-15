@@ -13,6 +13,14 @@ usersRouter.get('/', async (req, res) => {
   return res.status(200).json(users);
 });
 
+usersRouter.get('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const user = await usersController.getUserById(id);
+
+  return res.status(200).json(user);
+});
+
 usersRouter.post('/', async (req, res) => {
   try {
     const createdUser = await usersController.createUser(req.body);

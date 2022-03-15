@@ -10,10 +10,9 @@ const UsersListContainer = () => {
   const loadUsers = useCallback(async () => {
     try {
       const usersService = new UsersService(httpService);
-      const result: User[] = await usersService.getAllUsers();
+      const result: { data: User[] } = await usersService.getAllUsers();
       console.log('users', result);
 
-      // @ts-ignore
       setUsers(result.data);
       setIsUsersLoading(false);
     } catch (e) {

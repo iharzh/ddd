@@ -20,6 +20,28 @@ class UsersRepository {
     }
   }
 
+  async getUserById(id: string): Promise<any> {
+    try {
+      const { UserModel } = this.models;
+
+      const result: User = await UserModel.findOne({
+        where: {
+          id,
+        },
+      });
+
+      return {
+        id: result.id,
+        firstName: result.firstName,
+        lastName: result.lastName,
+        email: result.email,
+        username: result.username,
+      };
+    } catch (e) {
+      console.log('Error in usersRep');
+    }
+  }
+
   async createUser(user: any): Promise<any> {
     try {
       const { UserModel } = this.models;

@@ -1,8 +1,7 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { Home, Users, Login, Register } from './pages';
+import { Users, Login, Register, User } from './pages';
 import useAuth, { AuthProvider } from './contexts/auth';
-import { Header, Layout } from './shared/components';
+import { Layout } from './shared/components';
 
 const PrivateOutlet = () => {
   const isAuthenticated = !!localStorage.getItem('JWT_TOKEN');
@@ -25,6 +24,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<PrivateOutlet />}>
             <Route path="users" element={<Users />} />
+            <Route path="users/:id" element={<User />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

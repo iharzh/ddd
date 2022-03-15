@@ -15,8 +15,9 @@ export class HttpService {
     this.axiosInstance.interceptors.request.use(
       (config) => {
         const token = localStorage.getItem('JWT_TOKEN');
+        config.headers = config.headers || {};
+
         if (token) {
-          // @ts-ignore
           config.headers['x-access-token'] = token;
         }
         return config;

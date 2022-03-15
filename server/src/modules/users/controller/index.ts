@@ -15,6 +15,14 @@ class UsersController {
     }
   }
 
+  async getUserById(id: string): Promise<any> {
+    try {
+      return await this.userRepo.getUserById(id);
+    } catch (e) {
+      console.log('Users Controller error');
+    }
+  }
+
   async createUser(user: any) {
     try {
       return this.userRepo.createUser(user);
